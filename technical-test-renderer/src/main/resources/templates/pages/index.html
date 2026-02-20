@@ -80,18 +80,27 @@
     <!-- Ajoutez ici le formulaire de recherche de vols ou d'autres éléments pertinents -->
     <ul>
         <table>
-            <tr>
-                <th scope="col">Départ de</th>
-                <th scope="col">Arrivée à</th>
-                <th scope="col">Prix</th>
-                <th scope="col">Photo</th>
-            </tr>
-            <tr th:each="flight : ${flights}">
-                <th th:text="${flight.origin.name}"></th>
-                <th th:text="${flight.destination.name}"></th>
-                <th th:text="${flight.price}"></th>
-                <th th:text="${flight.photo}"></th>
-            </tr>
+            <thead>
+                <tr>
+                    <th scope="col">Départ de</th>
+                    <th scope="col">Arrivée à</th>
+                    <th scope="col">Prix</th>
+                    <th scope="col">Photo</th>
+                </tr>
+            </thead>
+           <tbody>
+               <tr th:each="flight : ${flights}">
+                   <td th:text="${flight.origin.name}"></td>
+                   <td th:text="${flight.destination.name}"></td>
+                   <td th:text="${#numbers.formatDecimal(flight.price, 1, 2) + ' €'}"></td>
+                   <td>
+                       <img th:src="${flight.image}"
+                            alt="Destination photo"
+                            style="width: 100px; height: auto; border-radius: 4px;"
+                            loading="lazy" />
+                   </td>
+               </tr>
+           </tbody>
         </table>
     </ul>
 </section>
