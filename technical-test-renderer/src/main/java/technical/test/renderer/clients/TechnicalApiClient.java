@@ -6,7 +6,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import technical.test.renderer.properties.TechnicalApiProperties;
-import technical.test.renderer.viewmodels.AirportViewModel;
 import technical.test.renderer.viewmodels.FlightViewModel;
 
 @Component
@@ -21,11 +20,24 @@ public class TechnicalApiClient {
         this.webClient = webClientBuilder.build();
     }
 
-    public Flux<FlightViewModel> getFlights() {
+    public Flux<FlightViewModel> getFlights(int page, String sortBy) {
+        String fullUri = technicalApiProperties.getUrl() + technicalApiProperties.getFlightPath() + "?page={page}&sortBy={sortBy}";
+
         return webClient
                 .get()
-                .uri(technicalApiProperties.getUrl() + technicalApiProperties.getFlightPath())
+                .uri(fullUri, page, sortBy)
                 .retrieve()
                 .bodyToFlux(FlightViewModel.class);
+    }
+
+    public Mono<FlightViewModel> createFlight(FlightViewModel newFlight) {
+        String fullUri = technicalApiProperties.getUrl() + technicalApiProperties.getFlightPath();
+
+        return webClient
+                .post()
+                .uri(fullUri)
+                .bodyValue(newFlight)
+                .retrieve()
+                .bodyToMono(FlightViewModel.class);
     }
 }

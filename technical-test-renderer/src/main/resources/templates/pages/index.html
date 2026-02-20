@@ -77,32 +77,65 @@
     <!-- Contenu de la recherche de vols -->
     <h2>Bienvenue sur notre site de recherche de vols</h2>
     <p>Commencez votre aventure en trouvant les meilleurs vols disponibles.</p>
-    <!-- Ajoutez ici le formulaire de recherche de vols ou d'autres éléments pertinents -->
-    <ul>
-        <table>
-            <thead>
-                <tr>
-                    <th scope="col">Départ de</th>
-                    <th scope="col">Arrivée à</th>
-                    <th scope="col">Prix</th>
-                    <th scope="col">Photo</th>
-                </tr>
-            </thead>
-           <tbody>
-               <tr th:each="flight : ${flights}">
-                   <td th:text="${flight.origin.name}"></td>
-                   <td th:text="${flight.destination.name}"></td>
-                   <td th:text="${#numbers.formatDecimal(flight.price, 1, 2) + ' €'}"></td>
-                   <td>
-                       <img th:src="${flight.image}"
-                            alt="Destination photo"
-                            style="width: 100px; height: auto; border-radius: 4px;"
-                            loading="lazy" />
-                   </td>
-               </tr>
-           </tbody>
-        </table>
-    </ul>
+
+    <div style="margin-bottom: 20px;">
+        <a href="/admin" style="padding: 10px; background-color: #2ecc71; color: white; text-decoration: none; border-radius: 4px; font-weight: bold;">
+            + Créer un nouveau vol
+        </a>
+    </div>
+
+    <form action="/" method="GET" style="margin-bottom: 20px; padding: 15px; background-color: #fff; border: 1px solid #ccc; border-radius: 4px;">
+        <label for="sortBy" style="font-weight: bold;">Trier par :</label>
+        <select name="sortBy" id="sortBy" style="padding: 5px; margin-left: 10px;">
+            <option value="price" th:selected="${currentSort == 'price'}">Prix</option>
+            <option value="origin" th:selected="${currentSort == 'origin'}">Lieu de départ</option>
+            <option value="destination" th:selected="${currentSort == 'destination'}">Lieu d'arrivée</option>
+            <option value="departure" th:selected="${currentSort == 'departure'}">Date de départ</option>
+        </select>
+        <input type="hidden" name="page" value="0" />
+        <button type="submit" style="padding: 5px 15px; margin-left: 10px; background-color: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer;">
+            Appliquer le filtre
+        </button>
+    </form>
+    <table>
+        <thead>
+            <tr>
+                <th scope="col">Départ de</th>
+                <th scope="col">Arrivée à</th>
+                <th scope="col">Prix</th>
+                <th scope="col">Photo</th>
+            </tr>
+        </thead>
+       <tbody>
+           <tr th:each="flight : ${flights}">
+               <td th:text="${flight.origin.name}"></td>
+               <td th:text="${flight.destination.name}"></td>
+               <td th:text="${#numbers.formatDecimal(flight.price, 1, 2) + ' €'}"></td>
+               <td>
+                   <img th:src="${flight.image}"
+                        alt="Destination photo"
+                        style="width: 100px; height: auto; border-radius: 4px;"
+                        loading="lazy" />
+               </td>
+           </tr>
+       </tbody>
+    </table>
+    <div style="margin-top: 20px; text-align: center;">
+        <a th:if="${currentPage > 0}"
+           th:href="@{/(page=${currentPage - 1}, sortBy=${currentSort})}"
+           style="padding: 8px 15px; background-color: #3498db; color: white; text-decoration: none; border-radius: 4px; margin-right: 10px;">
+            &laquo; Précédent
+        </a>
+
+        <span style="font-weight: bold; margin: 0 10px;">
+            Page <span th:text="${currentPage + 1}">1</span>
+        </span>
+
+        <a th:href="@{/(page=${currentPage + 1}, sortBy=${currentSort})}"
+           style="padding: 8px 15px; background-color: #3498db; color: white; text-decoration: none; border-radius: 4px; margin-left: 10px;">
+            Suivant &raquo;
+        </a>
+    </div>
 </section>
 
 <footer>

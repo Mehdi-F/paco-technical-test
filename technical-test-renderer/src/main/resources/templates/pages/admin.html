@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="fr" layout:decorate="~{decorators/master}"
+      xmlns:layout="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Administration - Créer un vol</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f7fc;
+            color: #333;
+            margin: 0;
+        }
+        header {
+            background-color: #3498db;
+            padding: 20px;
+            text-align: center;
+            color: #fff;
+        }
+        section {
+            padding: 40px;
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            margin-top: 20px;
+        }
+        footer {
+            background-color: #3498db;
+            padding: 10px 0;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+            color: #fff;
+        }
+        .form-group { margin-bottom: 15px; }
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        input[type="text"], input[type="number"], input[type="datetime-local"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #2ecc71;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            font-weight: bold;
+        }
+        button:hover { background-color: #27ae60; }
+        .back-link {
+            display: block;
+            margin-top: 20px;
+            text-align: center;
+            color: #3498db;
+            text-decoration: none;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Espace Administration</h1>
+</header>
+
+<section>
+    <h2>Créer un nouveau vol</h2>
+
+    <form th:action="@{/admin}" th:object="${newFlight}" method="post">
+
+        <div class="form-group">
+            <label for="origin">Code IATA Départ (ex: CDG) :</label>
+            <input type="text" id="origin" th:field="*{origin.iata}" required maxlength="3" />
+        </div>
+
+        <div class="form-group">
+            <label for="destination">Code IATA Arrivée (ex: JFK) :</label>
+            <input type="text" id="destination" th:field="*{destination.iata}" required maxlength="3" />
+        </div>
+
+        <div class="form-group">
+            <label for="price">Prix (€) :</label>
+            <input type="number" id="price" th:field="*{price}" step="0.01" required />
+        </div>
+
+        <div class="form-group">
+            <label for="departure">Date et heure de départ :</label>
+            <input type="datetime-local" id="departure" th:field="*{departure}" required />
+        </div>
+
+        <div class="form-group">
+            <label for="arrival">Date et heure d'arrivée :</label>
+            <input type="datetime-local" id="arrival" th:field="*{arrival}" required />
+        </div>
+
+        <div class="form-group">
+            <label for="image">URL de l'image (Optionnel) :</label>
+            <input type="text" id="image" th:field="*{image}" placeholder="https://images.unsplash.com/..." />
+        </div>
+
+        <button type="submit">Enregistrer le vol</button>
+    </form>
+
+    <a href="/" class="back-link">&laquo; Retour à la recherche</a>
+</section>
+
+<footer>
+    <p>&copy; 2023 Recherche de Vols. Tous droits réservés.</p>
+</footer>
+</body>
+</html>
